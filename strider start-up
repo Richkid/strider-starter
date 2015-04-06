@@ -4,7 +4,7 @@ int initial condition=0;
 int final_condition=0;
 int led=13;
 char option=1;
-boolean stse=0;
+boolean state=0;
 void setup()
 {
   Serial.begin(9600);
