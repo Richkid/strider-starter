@@ -1,0 +1,51 @@
+int sensor=0;
+int LDR_value=0;
+int initial condition=0;
+int final_condition=0;
+int led=13;
+char option=1;
+boolean stse=0;
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(led, output);
+  
+}
+void loop()
+{ 
+  LDR_value=analogRead(sensor);
+  initial_condition=map(LDR_value,0,1023,0,10);
+  Serial.println("press s to set initial condition");
+  if (Serial.available() > 0)
+  {
+    option=Serial.read();
+    if (option=='s')
+    {
+      Serial.println("taking initial lighting condition");
+      delay(1000);
+      Serial.println("reading taken");
+      delay(500);
+      LDR_value=analogRead(sensor);
+      final-condition=map(LDR_value,0,1023,0,10);
+      if (final_condition>initial_condition)
+      {
+        Serial.println("ready");
+        state=0;
+        digitalWrite(led, LOW);
+        LDR_value=analogRead(sensor);
+        final-condition=map(LDR_value,0,1023,0,10);
+        if ( final_condition>initial_condition)
+        {
+          Serial.println("go...");
+          state=1;
+          digitalWrite(led, HIGH);
+        }
+      }
+      if (final_condition<=initial_condition)
+      {
+        Serial.println("weak signal")
+        digitalWrite(led, LOW);
+      }
+    }
+  }
+}
