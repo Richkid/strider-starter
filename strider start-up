@@ -1,51 +1,33 @@
 int sensor=0;
 int LDR_value=0;
-int initial condition=0;
-int final_condition=0;
+int initial_condition=0;
 int led=13;
-char option=1;
-boolean state=0;
+int state=0;
 void setup()
 {
   Serial.begin(9600);
-  pinMode(led, output);
-  
+  pinMode(led, OUTPUT);
 }
 void loop()
 { 
-  LDR_value=analogRead(sensor);
-  initial_condition=map(LDR_value,0,1023,0,10);
-  Serial.println("press s to set initial condition");
-  if (Serial.available() > 0)
+  LDR_value=analogRead(sensor); //reading sensor digital values
+  initial_condition=map(LDR_value,0,1023,0,10);// map LDR reading to smaller values and store as initial_condition
+  state=initial_condition; //place initial condition in variable state for use later on
+  Serial.println("reading taken");
+  delay(1000);
+
+  while (initial_condition>=state-2) //allow sensor to constantly check for a change in lighting condtion. reducing the value of state by 2 reduces sensitivity
   {
-    option=Serial.read();
-    if (option=='s')
-    {
-      Serial.println("taking initial lighting condition");
-      delay(1000);
-      Serial.println("reading taken");
-      delay(500);
-      LDR_value=analogRead(sensor);
-      final-condition=map(LDR_value,0,1023,0,10);
-      if (final_condition>initial_condition)
+    //taking the reading of the initial condition to check against state-2 in the while loop 
+    LDR_value=analogRead(sensor);
+    initial_condition=map(LDR_value,0,1023,0,10);
+    Serial.println("checking for signal");
+  }
+      if (state>initial_condition)
       {
-        Serial.println("ready");
-        state=0;
-        digitalWrite(led, LOW);
-        LDR_value=analogRead(sensor);
-        final-condition=map(LDR_value,0,1023,0,10);
-        if ( final_condition>initial_condition)
-        {
-          Serial.println("go...");
-          state=1;
-          digitalWrite(led, HIGH);
+        for (;;) // infinite foor loop would represent void loop().
+        { 
+          Serial.println("go");
         }
       }
-      if (final_condition<=initial_condition)
-      {
-        Serial.println("weak signal")
-        digitalWrite(led, LOW);
-      }
-    }
   }
-}
