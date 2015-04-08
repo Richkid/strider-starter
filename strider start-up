@@ -11,12 +11,12 @@ void setup()
 void loop()
 { 
   LDR_value=analogRead(sensor); //reading sensor digital values
-  initial_condition=map(LDR_value,0,1023,0,10);// map LDR reading to smaller values and store as initial_condition
-  state=initial_condition; //place initial condition in variable state for use later on
+  initial_condition=map(LDR_value,0,1023,0,10);  // map LDR reading to smaller values and store as initial_condition
+  state=initial_condition;                 //place initial condition in variable state for use later on
   Serial.println("reading taken");
   delay(1000);
 
-  while (initial_condition>=state-2) //allow sensor to constantly check for a change in lighting condtion. reducing the value of state by 2 reduces sensitivity
+  while (initial_condition < state-2) //allow sensor to constantly check for a change in lighting condtion. reducing the value of state by 2 reduces sensitivity
   {
     //taking the reading of the initial condition to check against state-2 in the while loop 
     LDR_value=analogRead(sensor);
